@@ -1,7 +1,9 @@
 import type { Locale } from "./config"
 import en from "./dictionaries/en"
 
-export type Dictionary = typeof en
+export type Dictionary = {
+  [K in keyof typeof en]: typeof en[K] extends object ? { [P in keyof typeof en[K]]: string } : string
+}
 
 const dictionaries: Record<Locale, () => Promise<{ default: Dictionary }>> = {
   en: () => import("./dictionaries/en"),
